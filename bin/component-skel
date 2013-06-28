@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+var skel = require('..')
+  , program = require('commander')
+  , path = require('path')
+  , fs = require('fs')
+  , exists = fs.existsSync || path.existsSync;
+
+if (!exists('component.json')) fatal('Missing component.json. Did you run component create?');
+
+var conf = require(path.resolve('component.json'))
+  , skels = skel.getAll();
+
+program
+  .option('-v', '--verbose', 'verbose output');
+
+program.on('--help', function () {
+  console.log('  Examples:');
+  console.log();
+  console.log('    # add the html-test skeleton (and its dependencies)');
+  console.log('    $ component skel html-test');
+  console.log();
+  console.log('  Available Skeletons:');
+  console.log();
+  Object.keys(skels).forEach(function(name) {
+    var skel = skels[name]
+      , msg = '    ' + name + '';
+    if (skel.extends) {
+      msg += ' -> ' + skel.extends.join(', ');
+    }
+    console.log(msg);
+    if (skel.description) {
+      console.log('      ' + skel.description);
+    }
+    console.log();
+  });
+  // fatal('Please specify a skeleton to install');
+});
+
+var options = program.parse(process.argv);
+
+function fatal(message) {
+  console.log(message);
+  process.exit(1);
+}
+
+if (!options.args.length) {
+  program.help();
+}  
+
+
