@@ -28,3 +28,9 @@ three: four
 ---
 one: "one: two\n"
 three: "three: four"
+===
+one:
+	@echo "good"
+.PHONY: one two
+---
+one: "one:\n\t@echo \"good\""
