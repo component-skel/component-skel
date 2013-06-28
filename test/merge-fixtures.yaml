@@ -1,0 +1,32 @@
+default: build
+	@:
+
+test:
+	@echo "No Tests"
+
+build: file
+	@echo "man" > file.built
+
+.PHONY: build test
+---
+test: build
+	@mocha -R spec
+
+testci: build
+	@mocha
+
+.PHONY: test testci
+---
+default: build
+	@:
+
+build: file
+	@echo "man" > file.built
+
+test: build
+	@mocha -R spec
+
+testci: build
+	@mocha
+
+.PHONY: build test testci

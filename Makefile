@@ -1,6 +1,6 @@
 
 test:
-	@mocha
+	@mocha -R spec
 
 .PHONY: test
 
