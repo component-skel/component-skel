@@ -1,0 +1,30 @@
+one:
+---
+one: "one:"
+===
+one: two
+---
+one: "one: two"
+===
+one: two
+	@three
+	echo "four"
+---
+one: |
+    one: two
+    	@three
+    	echo "four"
+===
+one: two
+two:
+	@:
+---
+one: "one: two"
+two: "two:\n\t@:"
+===
+one: two
+
+three: four
+---
+one: "one: two\n"
+three: "three: four"

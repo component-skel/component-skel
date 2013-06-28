@@ -20,5 +20,9 @@
   "license": "MIT",
   "engines": {
     "node": ">=0.8.0"
+  },
+  "devDependencies": {
+    "chai": "~1.7.2",
+    "js-yaml": "~2.1.0"
   }
 }

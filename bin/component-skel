@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var skel = require('..')
+var Installer = require('..')
   , program = require('commander')
   , path = require('path')
   , fs = require('fs')
@@ -9,21 +9,17 @@ var skel = require('..')
 if (!exists('component.json')) fatal('Missing component.json. Did you run component create?');
 
 var conf = require(path.resolve('component.json'))
-  , skels = skel.getAll();
+  , main = new Installer(conf);
 
 program
+  .option('-l', '--list', 'List available skeletons')
   .option('-v', '--verbose', 'verbose output');
 
-program.on('--help', function () {
-  console.log('  Examples:');
-  console.log();
-  console.log('    # add the html-test skeleton (and its dependencies)');
-  console.log('    $ component skel html-test');
-  console.log();
+program.on('--list', function () {
   console.log('  Available Skeletons:');
   console.log();
-  Object.keys(skels).forEach(function(name) {
-    var skel = skels[name]
+  Object.keys(main.skels).forEach(function(name) {
+    var skel = main.skels[name]
       , msg = '    ' + name + '';
     if (skel.extends) {
       msg += ' -> ' + skel.extends.join(', ');
@@ -34,6 +30,15 @@ program.on('--help', function () {
     }
     console.log();
   });
+});
+
+program.on('--help', function () {
+  console.log('  Examples:');
+  console.log();
+  console.log('    # add the html-test skeleton (and its dependencies)');
+  console.log('    $ component skel html-test');
+  console.log();
+  program.emit('--list');
   // fatal('Please specify a skeleton to install');
 });
 
@@ -44,8 +49,27 @@ function fatal(message) {
   process.exit(1);
 }
 
-if (!options.args.length) {
-  program.help();
-}  
+if (program.list) {
+  program.emit('--list');
+  process.exit(0);
+}
 
+if (!options.args.length) program.help();
+
+options.args.forEach(function (one) {
+  if (!main.skels[one]) {
+    console.log();
+    console.log('  Error: Unknown skel specified "' + one + '"');
+    console.log();
+    program.emit('--list');
+    process.exit(1);
+  }
+});
+
+try {
+  main.install(options.args);
+} catch (e) {
+  console.log('Error installing:', e.message);
+  process.exit(1);
+}
 

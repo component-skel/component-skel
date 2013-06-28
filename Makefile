@@ -1,0 +1,6 @@
+
+test:
+	@mocha
+
+.PHONY: test
+
