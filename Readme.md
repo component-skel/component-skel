@@ -3,8 +3,12 @@
 Jumpstart component development.
 
 Use component skel to add a skeleton to work from right after beginning work
-on your component. I make this because I got tired of copying my `test/`
-directory from one component to the next.
+on your component. I made this because I got tired of copying my `test/`
+directory from one component to the next, and copying the same `make` targets
+over and over.
+
+Currently you need to grap skeletons yourself and put them in `~/.component/skel`;
+that might become automatic or somewhat managed in the future.
 
 # Usage
 
