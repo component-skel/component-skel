@@ -70,6 +70,7 @@ try {
   main.install(options.args);
 } catch (e) {
   console.log('Error installing:', e.message);
+  throw e;
   process.exit(1);
 }
 
